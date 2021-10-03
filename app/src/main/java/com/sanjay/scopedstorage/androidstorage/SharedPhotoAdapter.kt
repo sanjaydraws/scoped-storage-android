@@ -9,10 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sanjay.scopedstorage.databinding.ItemPhotoBinding
 
 class SharedPhotoAdapter(
-    private val onPhotoClick: (SharedStoragePhoto) -> Unit
+    private val onPhotoClick: (SharedStoragePhoto?) -> Unit
 ) : ListAdapter<SharedStoragePhoto, SharedPhotoAdapter.PhotoViewHolder>(Companion) {
-
-    inner class PhotoViewHolder(val binding: ItemPhotoBinding): RecyclerView.ViewHolder(binding.root)
 
     companion object : DiffUtil.ItemCallback<SharedStoragePhoto>() {
         override fun areItemsTheSame(oldItem: SharedStoragePhoto, newItem: SharedStoragePhoto): Boolean {
@@ -36,19 +34,25 @@ class SharedPhotoAdapter(
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val photo = currentList[position]
-        holder.binding.apply {
-            ivPhoto.setImageURI(photo.contentUri)
+        holder.setUpData(photo)
 
-            val aspectRatio = photo.width.toFloat() / photo.height.toFloat()
-            ConstraintSet().apply {
-                clone(root)
-                setDimensionRatio(ivPhoto.id, aspectRatio.toString())
-                applyTo(root)
-            }
+    }
+    inner class PhotoViewHolder(val binding: ItemPhotoBinding): RecyclerView.ViewHolder(binding.root) {
+        fun setUpData(photo: SharedStoragePhoto?) {
+            binding.apply {
+                ivPhoto.setImageURI(photo?.contentUri)
 
-            ivPhoto.setOnLongClickListener {
-                onPhotoClick(photo)
-                true
+//                val aspectRatio = photo.width.toFloat() / photo.height.toFloat()
+//                ConstraintSet().apply {
+//                    clone(root)
+//                    setDimensionRatio(ivPhoto.id, aspectRatio.toString())
+//                    applyTo(root)
+//                }
+
+                ivPhoto.setOnLongClickListener {
+                    onPhotoClick(photo)
+                    true
+                }
             }
         }
     }

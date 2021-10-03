@@ -43,13 +43,15 @@ class InternalStoragePhotoAdapter(private val onPhotoClick: (InternalStoragePhot
 
                 val width:Float? = photo?.bmp?.width?.toFloat()
                 val height:Float? = photo?.bmp?.height?.toFloat()
-                val aspectRatio:Float = width/height
-
-                    ConstraintSet().apply {
-                    clone(root)
-                    setDimensionRatio(ivPhoto.id, aspectRatio.toString())
-                    applyTo(root)
-                }
+//                width?.let {
+//                    val aspectRatio:Float = width / height!!
+//                }
+//
+//                    ConstraintSet().apply {
+//                    clone(root)
+//                    setDimensionRatio(ivPhoto.id, aspectRatio.toString())
+//                    applyTo(root)
+//                }
             }
             binding.ivPhoto.setOnLongClickListener {
                 if (photo != null) {
